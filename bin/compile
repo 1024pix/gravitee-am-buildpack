@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -eu
+
+GRAVITEE_MODULE=${GRAVITEE_AM_MODULE:-}
+PORTAL="gravitee-am-webui"
+GATEWAY="gravitee-am-gateway"
+API="gravitee-am-management-api"
+
+
+GRAVITEE_AM_MODULE=${GRAVITEE_AM_MODULE:-}
+if [[ -z "${GRAVITEE_AM_MODULE}" ]]; then
+  echo -n "-----> Veuillez saisir le module Gravitee AM à déployer en définissant la variable d'env GRAVITEE_AM_MODULE... "
+  exit 1
+fi
+
+MODULES=(" ${PORTAL} ${GATEWAY} ${API} ")
+if [[ ! " ${MODULES[*]} " =~ " ${GRAVITEE_AM_MODULE} " ]]; then
+  echo -n "-----> Veuillez saisir un des modules Gravitee AM ${MODULES}"
+  exit 1
+fi
+
+
+FOLDER=${1:-}
+if [[ -z "${FOLDER}" ]]; then
+  echo -n "-----> Veuillez spécifier un répertoire i.e. '.' "
+  exit 1
+fi
+
+IS_STANDALONE=""
+
+if [[ ! " ${GRAVITEE_MODULE} " =~ "gravitee-am-webui" ]]; then
+IS_STANDALONE="-standalone"
+fi
+
+GRAVITEE_AM_VERSION=$(cat ./bin/version)
+GRAVITEE_AM_DOWNLOADS="$FOLDER/downloads"
+GRAVITEE_AM_ZIP="$GRAVITEE_AM_DOWNLOADS/$GRAVITEE_AM_MODULE$IS_STANDALONE.zip"
+
+
+GRAVITEE_AM_URL=https://download.gravitee.io/graviteeio-am/components/$GRAVITEE_AM_MODULE/$GRAVITEE_AM_MODULE$IS_STANDALONE-$GRAVITEE_AM_VERSION.zip
+
+
+mkdir -p "$GRAVITEE_AM_DOWNLOADS"
+
+echo -n "-----> Downloading Graviteeio-AM $GRAVITEE_AM_VERSION from $GRAVITEE_AM_URL to $GRAVITEE_AM_ZIP..."
+curl -s --retry 3 -o "$GRAVITEE_AM_ZIP" -L "$GRAVITEE_AM_URL"
+echo "done"
+
+echo -n "-----> Extracting ZIP...  $GRAVITEE_AM_ZIP  to $GRAVITEE_AM_DOWNLOADS..."
+unzip -q "$GRAVITEE_AM_ZIP" -d "$GRAVITEE_AM_DOWNLOADS"
+echo "done"
+
+echo -n "-----> Init gravitee folders..."
+mv "$GRAVITEE_AM_DOWNLOADS/$GRAVITEE_MODULE$IS_STANDALONE-$GRAVITEE_AM_VERSION" "$1"
+echo "done"
+
+echo -n "-----> Run config for ${GRAVITEE_MODULE} module"
+"./gravitee-am/${GRAVITEE_MODULE}/setup-config.sh" "$GRAVITEE_MODULE$IS_STANDALONE-$GRAVITEE_AM_VERSION"
+echo -n "-----> Config done for ${GRAVITEE_MODULE}"
+
+
+echo -n "-----> Deleting downloads directory..."
+rm -rf "$GRAVITEE_AM_DOWNLOADS" "$GRAVITEE_MODULE$IS_STANDALONE-$GRAVITEE_AM_VERSION"
+echo -e "Gravite AM buildpack Done..."
+
