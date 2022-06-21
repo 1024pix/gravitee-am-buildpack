@@ -1,0 +1,359 @@
+#
+# Copyright (C) 2015 The Gravitee team (http://gravitee.io)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+############################################################################################################
+########################## Gravitee.io Access Management - Gateway - Configuration ###########################
+############################################################################################################
+
+############################################################################################################
+# This file is the general configuration of Gravitee.io Access Management - Gateway:
+# - Properties (and respective default values) in comment are provided for information.
+# - You can reference other property by using ${property.name} syntax
+# - gravitee.home property is automatically set-up by launcher and refers to the installation path. Do not override it !
+#
+# Please have a look to https://docs.gravitee.io/ for more options and fine-grained granularity
+############################################################################################################
+
+# Gateway HTTP server
+#http:
+#  port: 8092
+#  host: 0.0.0.0
+#  idleTimeout: 0
+#  tcpKeepAlive: true
+#  compressionSupported: false
+#  maxHeaderSize: 8192
+#  maxChunkSize: 8192
+#  maxInitialLineLength: 4096
+#  maxFormAttributeSize: 2048
+#  instances: 0
+#  secured: false
+#  alpn: false
+#  ssl:
+#    certificateHeader: X-ClientCert # header where the peer certificate is read if there are no sslSession (default is null)
+#    # mtls_aliases allows to override some endpoints regarding https://tools.ietf.org/id/draft-ietf-oauth-mtls-13.html#endpointAliases
+#    # The base_url contains the common url for each overrode endpoints.
+#    # The list of endpoint that support the mtls_aliases is : token_endpoint, authorization_endpoint, registration_endpoint, userinfo_endpoint, pushed_authorization_request_endpoint, end_session_endpoint, revocation_endpoint, introspection_endpoint
+#    mtls_aliases: # base URL for mtls_endpoint_aliases (default is null and the standard endpoints will be used)
+#      base_url: https://mycompany.mlts.com
+#      endpoints:
+#        - token_endpoint
+#        - registration_endpoint
+#        - userinfo_endpoint
+#        - pushed_authorization_request_endpoint
+#    clientAuth: request # Supports none, request, required
+#    ciphers: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 , TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 , TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+#    tlsProtocols: TLSv1.2, TLSv1.3
+#    keystore:
+#      type: jks # Supports jks, pem, pkcs12
+#      path: ${gravitee.home}/security/keystore.jks
+#      password: secret
+#    truststore:
+#      type: jks # Supports jks, pem, pkcs12
+#      path: ${gravitee.home}/security/truststore.jks
+#      password: secret
+#
+#  cookie:
+#    secure: false # Default is false for demonstration purpose but we highly recommend you to enable cookie secure.
+#    sameSite: Lax
+#    session:
+#      name: session-name
+#      persistent: true
+#      timeout: 1800000 # (in milliseconds)
+#  csrf:
+#    secret: s3cR3t4grAv1t3310AMS1g1ingDftK3y
+#  cors:
+#      Allows to configure the header Access-Control-Allow-Origin (default value: *)
+#      '*' is a valid value but is considered as a security risk as it will be opened to cross origin requests from anywhere.
+#    allow-origin: http://developer.mycompany.com
+#      Allows to define how long the result of the preflight request should be cached for (default value; 1728000 [20 days])
+#    max-age: 864000
+#      Which methods to allow (default value: OPTIONS, GET, POST, PUT, DELETE, PATCH)
+#    allow-methods: 'OPTIONS, GET, POST, PUT, DELETE, PATCH'
+#      Which headers to allow (default values: Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, If-Match, X-Xsrf-Token)
+#    allow-headers: 'X-Requested-With'
+#      Allows the use of credentials (cookies, authorization headers, or TLS client certificates) when performing the request
+#      default is `false`
+#    allow-credentials: true
+#  csp:
+#    reportOnly: false
+#    # set true if you want to include the directive 'script-src' with the nonce value generated for inline script.
+#    # to by marked by the nonce value, your inline script has to contain th:attr="nonce=${script_inline_nonce}"
+#    script-inline-nonce: false
+#    directives:
+#      - "default-src * data: blob: filesystem: about: ws: wss: 'unsafe-inline' 'unsafe-eval' 'unsafe-dynamic';"
+#      - "script-src * 'unsafe-inline' 'unsafe-eval';"
+#      - "connect-src * 'unsafe-inline';"
+#      - "img-src * data: blob: 'unsafe-inline';"
+#      - "frame-src *;"
+#      - "style-src * data: blob: 'unsafe-inline';"
+#      - "font-src * data: blob: 'unsafe-inline';"
+#  # xframe section allows to activate the X-Frame-Options header
+#  # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+#  # if not action (DENY or SAMEORIGIN) is specified, the X-Frame-Options header will no be set into the response
+#  xframe:
+#    action: DENY
+
+# Path to plugins repository
+#plugins:
+#  path: ${gravitee.home}/plugins
+# If a plugin is already installed (but with a different version), management node does not start anymore
+#  failOnDuplicate: true
+
+# Management repository is used to store global configuration such as domains, clients, ...
+# This is the default configuration using MongoDB (single server)
+# For more information about MongoDB configuration, please have a look to:
+# - http://api.mongodb.org/java/current/com/mongodb/MongoClientOptions.html
+management:
+  type: mongodb
+  mongodb:
+    dbname: ${ds.mongodb.dbname}
+    host: ${ds.mongodb.host}
+    port: ${ds.mongodb.port}
+#    username:
+#    password:
+#    authSource:
+#    connectionsPerHost: 0
+#    connectTimeout: 500
+#    maxWaitTime: 120000
+#    socketTimeout: 500
+#    socketKeepAlive: false
+#    maxConnectionLifeTime: 0
+#    maxConnectionIdleTime: 0
+#    serverSelectionTimeout: 0
+#    description: gravitee.io
+#    heartbeatFrequency: 10000
+#    minHeartbeatFrequency: 500
+#    heartbeatConnectTimeout: 1000
+#    heartbeatSocketTimeout: 20000
+#    localThreshold: 15
+#    minConnectionsPerHost: 0
+#    sslEnabled: false
+#    threadsAllowedToBlockForConnectionMultiplier: 5
+#    cursorFinalizerEnabled: true
+#    ensureIndexOnStart: true
+
+# AM Gateway service configurations. Provided values are default values.
+# All services are enabled by default. To stop one of them, you have to add the property 'enabled: false' (See the
+# 'local' service for an example).
+services:
+  core:
+    http:
+      enabled: true
+      port: 18092
+      host: localhost
+      authentication:
+        # authentication type to be used for the core services
+        # - none : to disable authentication
+        # - basic : to use basic authentication
+        # default is "basic"
+        type: basic
+        users:
+          admin: adminadmin
+
+  # Metrics service
+  metrics:
+    enabled: false
+    prometheus:
+      enabled: true
+
+  # Gateway monitoring service.
+  # This service retrieves metrics like os / process / jvm metrics.
+  monitoring:
+    delay: 5000
+    unit: MILLISECONDS
+
+# OAuth2 repository is used to store OAuth2 tokens: access_token, refresh_token
+oauth2:
+  type: mongodb
+  mongodb:
+    dbname: ${ds.mongodb.dbname}
+    host: ${ds.mongodb.host}
+    port: ${ds.mongodb.port}
+#    ensureIndexOnStart: true
+
+# Configuration of additional reporters
+#reporters:
+#  file:
+#    directory:  # directory where the files are created (this directory have to exist): default value = ${gravitee.home}/audit-logs/
+#    output: JSON # JSON, ELASTICSEARCH, MESSAGE_PACK, CSV
+
+# JWT used to generate signed token for OAuth 2.0/OpenID Connect protocols and to verify emails
+jwt:
+  secret: s3cR3t4grAv1t3310AMS1g1ingDftK3y # jwt secret used to sign JWT tokens (HMAC algorithm)
+  #kid: default-gravitee-AM-key # kid (key ID) Header Parameter is a hint indicating which key was used to secure the JWT
+  #expire-after: 604800 # the end of validity of the token in seconds (default 604800 = a week)
+  #issuer: https://gravitee.am # the principal that issued the JWT (default https://gravitee.am)
+
+# SMTP configuration used to send mails
+email:
+  enabled: false
+  host: smtp.my.domain
+  subject: "[Gravitee.io] %s"
+  port: 587
+  from: noreply@my.domain
+  username: user@my.domain
+  password: password
+#  properties:
+#    auth: true
+#    starttls.enable: true
+#    ssl.trust: smtp.gmail.com
+
+# Mail templates
+#templates:
+#  path: ${gravitee.home}/templates
+
+# User management configuration
+user:
+  email:
+    policy:
+      pattern: ^[a-zA-Z0-9_+-]+(?:\.[a-zA-Z0-9_+-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$
+  # Password complexity validation policy
+  # Applications should enforce password complexity rules to discourage easy to guess passwords.
+  # Passwords should require a minimum level of complexity that makes sense for the application and its user population.
+  password:
+    policy:
+      # Regex pattern for password validation (default to OWASP recommendations).
+      # 8 to 32 characters, no more than 2 consecutive equal characters, min 1 special characters (@ & # ...), min 1 upper case character.
+      pattern: ^(?:(?=.*\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\1{2,})[A-Za-z0-9!~<>,;:_\-=?*+#."'&§`£€%°()\\\|\[\]\-\$\^\@\/]{8,32}$
+        # Example : ^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,}$
+        # ^                # start-of-string
+        #(?=.*[0-9])       # a digit must occur at least once
+        #(?=.*[a-z])       # a lower case letter must occur at least once
+        #(?=.*[A-Z])       # an upper case letter must occur at least once
+        #(?=.*[@#$%^&+=])  # a special character must occur at least once
+        #(?=\S+$)          # no whitespace allowed in the entire string
+        #.{8,}             # anything, at least eight places though
+        #$                 # end-of-string
+
+      ## Password dictionary to exclude most commons passwords
+      ## You need to enable the feature in the AM management console
+
+      #dictionary:
+      #  filename: /path/to/dictionary  # if null `resources/dictionaries/10k-most-common.txt` will be loaded
+      #  watch: true #if true, watches periodically for any changes in the file
+  name:
+    strict:
+      policy:
+        pattern: ^[^±!@£$%^&*_+§¡€#¢¶•ªº«»\\/<>?:;|=.,]{0,100}$
+    lax:
+      policy:
+        pattern: ^[^±!£$%^&*§¡€¢¶•ªº«»\\/<>?|=]{0,100}$
+  username:
+    policy:
+      pattern: ^[^±!£$%^&*§¡€¢¶•ªº«»\\/<>?:;|=,]{1,100}$
+
+  registration:
+    email:
+      #subject: New user registration
+    token:
+      #expire-after: 86400 # the end of validity of the token in seconds for registration email (default 86400 = a day)
+  resetPassword:
+    email:
+      #subject: Please reset your password
+    token:
+      #expire-after: 300 # the end of validity of the token in seconds for reset password email (default 300 = 5 minutes)
+  blockedAccount:
+      email:
+      #subject: Account has been locked
+      token:
+      #expire-after: 86400 # the end of validity of the token in seconds for blocked account email (default 86400 = a day)
+  mfaChallenge:
+      email:
+      #subject: Verification Code
+      token:
+      #expire-after: 300 # the end of validity of the token in seconds for MFA email (default 300 = 5 minutes)
+
+handlers:
+  request:
+    transaction:
+      header: X-Gravitee-Transaction-Id
+
+# Gateway entry point used in emails
+gateway:
+  url: http://localhost:8092
+
+# global configuration of the http client
+#httpClient:
+#  timeout: 10000 # in milliseconds
+#  proxy:
+#    enabled: false
+#    exclude-hosts: # list of hosts to exclude from proxy (wildcard hosts are supported)
+#      - '*.internal.com'
+#      - internal.mycompany.com
+#    type: HTTP #HTTP, SOCK4, SOCK5
+#    http:
+#      host: localhost
+#      port: 3128
+#      username: user
+#      password: secret
+#    https:
+#      host: localhost
+#      port: 3128
+#      username: user
+#      password: secret
+
+# Organizations and Environments configuration
+# Associate this gateway to a list of environments and their organizations. Use hrids to define these values.
+#organizations: mycompany
+#environments: dev,qa
+
+# Sharding tags configuration
+# Allows to define inclusion/exclusion sharding tags to only deploy a part of security domains. To exclude just prefix the tag with '!'.
+#tags: public,private,!partner
+
+#el:
+  # Allows to define which methods or classes are accessible to the Expression Language engine (/!\ caution, changing default whitelist may expose you to security issues).
+  # A complete list of default whitelist methods can be found here (https://raw.githubusercontent.com/gravitee-io/gravitee-expression-language/master/src/main/resources/whitelist).
+#  whitelist:
+    # Allows to define if the specified list of method or classes should be append to the default one or should replace it.
+    # We recommend you to always choose 'append' unless you absolutely know what you are doing.
+#    mode: append
+    # Define the list of classes or methods to append (or set) to made accessible to the Expression Language.
+    # start with 'method' to allow a specific method (complete signature).
+    # start with 'class' to allow a complete class. All methods of the class will then be accessible.
+#    list:
+      # Ex: allow access to DateTimeFormatter.ofLocalizedDate(FormatStyle) method
+#      - method java.time.format.DateTimeFormatter ofLocalizedDate java.time.format.FormatStyle
+      # Ex: allow access to all methods of DateTimeFormatter class
+#      - class java.time.format.DateTimeFormatter
+
+# If the policy 'Enrich Authentication Flow' is used, additional information are loaded into the execution context.
+#authenticationFlow:
+#  exitOnError: false # if true, authentication flow will return an error, otherwise the flow will continue without additional information (default: false)
+#  maxRetries: 2 # number of retries when reading information if there are inconsistent with the one previously stored (may happen using mongo replicas)
+#  retryInterval: 1000 # delay in ms between two retries (default: 1000)
+#  expirationTimeOut: 300 # the end of validity of the data in seconds (default 300 = 5 minutes)
+
+# Configuration of geoip (requires geoip-plugin)
+#geoip:
+#  database:
+#    city:
+#      filename: /path/to/GeoLite2-City.mmdb #if null defaults to the embedded db
+#      watch: true  #if null defaults to false
+#      cache:
+#        capacity: 8200  #if null defaults to 4096
+
+# Referenced properties
+ds:
+  mongodb:
+    dbname: gravitee-am
+    host: localhost
+    port: 27017
+
+# For AM GATEWAY, liquibase updates are disabled by default.
+liquibase:
+  enabled: false
+
