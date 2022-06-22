@@ -10,7 +10,13 @@ fi
 
 echo -n "-----> Copying buildpack gravitee-am-gateway configuration ... "
 CONFIG_FILE=./gravitee-am/$GRAVITEE_AM_MODULE/pix-config
-
-cp ${CONFIG_FILE}/gravitee.yml ./$INSTALL_FOLDER/config/gravitee.yml
-cp ${CONFIG_FILE}/logback.xml ./$INSTALL_FOLDER/config/logback.xml
+echo '--- pwd'
+pwd
+ls ${CONFIG_FILE} 
+echo '--- ls'
+ls 
+echo '--- ls app'
+ls /app
+cp ${CONFIG_FILE}/gravitee.yml $INSTALL_FOLDER/config/gravitee.yml
+cp ${CONFIG_FILE}/logback.xml $INSTALL_FOLDER/config/logback.xml
 echo "done"
