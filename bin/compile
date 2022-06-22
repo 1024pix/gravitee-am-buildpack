@@ -61,6 +61,6 @@ echo -n "-----> Config done for ${GRAVITEE_MODULE}"
 
 
 echo -n "-----> Deleting downloads directory..."
-rm -rf "$GRAVITEE_AM_DOWNLOADS" "$GRAVITEE_MODULE$IS_STANDALONE-$GRAVITEE_AM_VERSION"
+rm -rf "$GRAVITEE_AM_DOWNLOADS"
 echo -e "Gravite AM buildpack Done..."
 
