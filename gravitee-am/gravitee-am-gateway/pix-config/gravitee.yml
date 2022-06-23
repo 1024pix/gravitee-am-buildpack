@@ -9,9 +9,7 @@ http:
 management:
   type: mongodb
   mongodb:
-    dbname: ${ds.mongodb.dbname}
-    host: ${ds.mongodb.host}
-    port: ${ds.mongodb.port}
+    uri: DEFAULT
 
 # AM Gateway service configurations. Provided values are default values.
 # All services are enabled by default. To stop one of them, you have to add the property 'enabled: false' (See the
@@ -145,6 +143,8 @@ ds:
     dbname: ${MONGO_DB_NAME}
     host: ${MONGO_DB_HOST}
     port: ${MONGO_DB_PORT}
+    username: ${MONGO_DB_USER}
+    password: ${MONGO_DB_USERNAME}
 
 # For AM GATEWAY, liquibase updates are disabled by default.
 liquibase:

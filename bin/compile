@@ -57,10 +57,12 @@ echo 'pwd compile'
 pwd
 echo 'echo $1'
 echo $1
+echo 'ls $1'
+ls $1
 echo "done"
 
 echo -n "-----> Run config for ${GRAVITEE_MODULE} module"
-"./gravitee-am/${GRAVITEE_MODULE}/setup-config.sh" "$GRAVITEE_MODULE$IS_STANDALONE-$GRAVITEE_AM_VERSION"
+"./gravitee-am/${GRAVITEE_MODULE}/setup-config.sh" "$1"
 echo -n "-----> Config done for ${GRAVITEE_MODULE}"
 
 
